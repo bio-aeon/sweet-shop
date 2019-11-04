@@ -1,0 +1,7 @@
+*.class
+*.sc
+.idea
+target/
+logs/
+env.conf
+
