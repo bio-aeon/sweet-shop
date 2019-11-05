@@ -1,33 +1,50 @@
-val Http4sVersion = "0.20.12"
-val CirceVersion = "0.11.1"
-val Specs2Version = "4.8.0"
-val LogbackVersion = "1.2.3"
+import Dependencies._
 
-lazy val root = (project in file("."))
-  .settings(
-    organization := "su.wps",
-    name := "sweet-shop",
-    version := "0.0.1-SNAPSHOT",
-    scalaVersion := "2.12.10",
-    libraryDependencies ++= Seq(
-      "org.http4s"      %% "http4s-blaze-server" % Http4sVersion,
-      "org.http4s"      %% "http4s-blaze-client" % Http4sVersion,
-      "org.http4s"      %% "http4s-circe"        % Http4sVersion,
-      "org.http4s"      %% "http4s-dsl"          % Http4sVersion,
-      "io.circe"        %% "circe-generic"       % CirceVersion,
-      "org.specs2"      %% "specs2-core"         % Specs2Version % "test",
-      "ch.qos.logback"  %  "logback-classic"     % LogbackVersion
-    ),
-    addCompilerPlugin("org.typelevel" %% "kind-projector"     % "0.10.3"),
-    addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % "0.3.0")
-  )
+organization in ThisBuild := "su.wps"
+version in ThisBuild := "0.1.0-SNAPSHOT"
 
-scalacOptions ++= Seq(
+scalaVersion in ThisBuild := "2.12.10"
+
+val commonScalacOptions = Seq(
   "-deprecation",
-  "-encoding", "UTF-8",
-  "-language:higherKinds",
-  "-language:postfixOps",
   "-feature",
-  "-Ypartial-unification",
-  "-Xfatal-warnings"
+  "-encoding",
+  "UTF-8",
+  "-language:implicitConversions",
+  "-language:experimental.macros",
+  "-language:postfixOps",
+  "-language:higherKinds",
+  "-language:existentials",
+  "-language:reflectiveCalls",
+  "-Ypartial-unification"
 )
+
+lazy val root =
+  (project in file("."))
+    .settings(name := "sweet-shop")
+    .aggregate(authApi, authImpl, webGateway)
+
+lazy val authApi = project in file("microservices/auth-api")
+
+lazy val authImpl = (project in file("microservices/auth-impl"))
+  .settings(
+    scalacOptions ++= commonScalacOptions,
+    libraryDependencies ++= Seq(
+      monix,
+      http4sBlazeServer,
+      http4sCirce,
+      http4sDsl,
+      doobieCore,
+      doobiePostgres,
+      doobieHikari,
+      pureConfig,
+      plivo
+    )
+  )
+  .dependsOn(authApi)
+
+lazy val webGateway = (project in file("microservices/web-gateway"))
+  .settings(
+    scalacOptions ++= commonScalacOptions,
+    libraryDependencies ++= Seq(http4sBlazeServer, http4sCirce, http4sDsl, monix)
+  )
