@@ -20,4 +20,8 @@ class AuthUserRepositoryImpl extends DoobieRepository with AuthUserRepository[Co
     """).update
       .withUniqueGeneratedKeys[Int]("id")
       .map(id => authUser.copy(id = UserId(id)))
+
+  def findByPhone(phone: String): ConnectionIO[Option[AuthUser]] =
+    (fr"select email, password, is_verified, created_at, phone, role, id from" ++ tableName ++
+      fr"where phone = $phone").query[AuthUser].option
 }

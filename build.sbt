@@ -38,8 +38,13 @@ lazy val authImpl = (project in file("microservices/auth-impl"))
       doobiePostgres,
       doobieHikari,
       pureConfig,
-      plivo
-    )
+      pureconfigCatsEffect,
+      plivo,
+      circeJava8,
+      jwtCirce
+    ),
+    resolvers ++= Seq(Resolver.sonatypeRepo("releases")),
+    addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
   )
   .dependsOn(authApi)
 

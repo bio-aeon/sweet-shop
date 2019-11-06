@@ -7,8 +7,9 @@ object Dependencies {
   val LogbackVersion = "1.2.3"
   val MonixVersion = "3.0.0"
   val DoobieVersion = "0.6.0"
-  val PureConfigVersion = "0.10.2"
+  val PureConfigVersion = "0.12.1"
   val PlivoVersion = "4.4.1"
+  val JwtVersion = "2.1.0"
 
   lazy val http4sBlazeServer = "org.http4s" %% "http4s-blaze-server" % Http4sVersion
   lazy val http4sCirce = "org.http4s" %% "http4s-circe" % Http4sVersion
@@ -18,5 +19,8 @@ object Dependencies {
   lazy val doobiePostgres = "org.tpolecat" %% "doobie-postgres" % DoobieVersion
   lazy val doobieHikari = "org.tpolecat" %% "doobie-hikari" % DoobieVersion
   lazy val pureConfig = "com.github.pureconfig" %% "pureconfig" % PureConfigVersion
+  lazy val pureconfigCatsEffect = "com.github.pureconfig" %% "pureconfig-cats-effect" % PureConfigVersion
   lazy val plivo = "com.plivo" % "plivo-java" % PlivoVersion
+  lazy val circeJava8 = "io.circe" %% "circe-java8" % CirceVersion
+  lazy val jwtCirce = "com.pauldijou" %% "jwt-circe" % JwtVersion
 }
