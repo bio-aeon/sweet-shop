@@ -46,10 +46,22 @@ lazy val authImpl = (project in file("microservices/auth-impl"))
     resolvers ++= Seq(Resolver.sonatypeRepo("releases")),
     addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
   )
-  .dependsOn(authApi)
+  .dependsOn(authApi, errors)
 
 lazy val webGateway = (project in file("microservices/web-gateway"))
   .settings(
     scalacOptions ++= commonScalacOptions,
-    libraryDependencies ++= Seq(http4sBlazeServer, http4sCirce, http4sDsl, monix)
+    libraryDependencies ++= Seq(
+      http4sBlazeServer,
+      http4sCirce,
+      http4sDsl,
+      monix,
+      sangria,
+      sangriaCirce,
+      circeOptics
+    )
   )
+  .dependsOn(authApi, errors)
+
+lazy val errors = (project in file("modules/errors"))
+  .settings(scalacOptions ++= commonScalacOptions, libraryDependencies ++= Seq(catsCore))
