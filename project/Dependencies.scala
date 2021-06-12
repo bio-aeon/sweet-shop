@@ -25,9 +25,8 @@ object Dependencies {
   lazy val pureConfig = "com.github.pureconfig" %% "pureconfig" % PureConfigVersion
   lazy val pureconfigCatsEffect = "com.github.pureconfig" %% "pureconfig-cats-effect" % PureConfigVersion
   lazy val plivo = "com.plivo" % "plivo-java" % PlivoVersion
+  lazy val circeGeneric = "io.circe" %% "circe-generic" % CirceVersion
   lazy val circeJava8 = "io.circe" %% "circe-java8" % CirceVersion
   lazy val circeOptics = "io.circe" %% "circe-optics" % CirceVersion
   lazy val jwtCirce = "com.pauldijou" %% "jwt-circe" % JwtVersion
-  lazy val sangria = "org.sangria-graphql" %% "sangria" % SangriaVersion
-  lazy val sangriaCirce = "org.sangria-graphql" %% "sangria-circe" % SangriaCirceVersion
 }

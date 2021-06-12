@@ -24,7 +24,14 @@ lazy val root =
     .settings(name := "sweet-shop")
     .aggregate(authApi, authImpl, webGateway)
 
-lazy val authApi = project in file("microservices/auth-api")
+lazy val authApi = (project in file("microservices/auth-api"))
+  .settings(
+    scalacOptions ++= commonScalacOptions,
+    libraryDependencies ++= Seq(
+      circeGeneric
+    ),
+    addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
+  )
 
 lazy val authImpl = (project in file("microservices/auth-impl"))
   .settings(
@@ -56,8 +63,6 @@ lazy val webGateway = (project in file("microservices/web-gateway"))
       http4sCirce,
       http4sDsl,
       monix,
-      sangria,
-      sangriaCirce,
       circeOptics
     )
   )
