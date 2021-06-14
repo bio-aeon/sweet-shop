@@ -7,8 +7,7 @@ import org.http4s.circe._
 import org.http4s.dsl.Http4sDsl
 import su.wps.sweetshop.auth.api.dto.UserDto
 
-final class Routes[F[_]: Sync]
-    extends Http4sDsl[F] {
+final class Routes[F[_]: Sync] extends Http4sDsl[F] {
 
   def routes = HttpRoutes.of[F] {
     case r @ GET -> Root / "api" / "v1" / "me" =>

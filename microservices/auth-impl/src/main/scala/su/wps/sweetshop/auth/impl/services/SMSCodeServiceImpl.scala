@@ -31,7 +31,7 @@ class SMSCodeServiceImpl[F[_], G[_]: Monad](repo: SMSCodeRepository[F], smsGatew
           val template = fromInputStream(
             getClass.getClassLoader
               .getResourceAsStream("sms/code.txt")
-          ).getLines.mkString
+          ).getLines().mkString
           EitherT.liftF[G, String, Unit](
             repo.insert(SMSCode(phone, code, ZonedDateTime.now)).liftT[G] *> smsGateway
               .send(phone, template, List(TemplateVar("code", code)))

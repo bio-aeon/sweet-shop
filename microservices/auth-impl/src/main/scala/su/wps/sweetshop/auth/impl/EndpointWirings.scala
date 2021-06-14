@@ -6,6 +6,8 @@ import org.http4s.implicits._
 import org.http4s.server.blaze.BlazeServerBuilder
 import su.wps.sweetshop.auth.impl.config.AppConfig
 
+import scala.concurrent.ExecutionContext
+
 final class EndpointWirings[F[_]: ConcurrentEffect: Timer](config: AppConfig,
                                                            serviceWirings: ServiceWirings[F]) {
   import serviceWirings._
@@ -13,7 +15,8 @@ final class EndpointWirings[F[_]: ConcurrentEffect: Timer](config: AppConfig,
   val routes: HttpRoutes[F] = new Routes[F](smsCodeService, authService).routes
 
   def launchHttpService: F[Unit] =
-    BlazeServerBuilder[F]
+    BlazeServerBuilder
+      .apply(ExecutionContext.global)
       .bindHttp(config.httpServer.port, config.httpServer.interface)
       .withHttpApp(routes.orNotFound)
       .serve

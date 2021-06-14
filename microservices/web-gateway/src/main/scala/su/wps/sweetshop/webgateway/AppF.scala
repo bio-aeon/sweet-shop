@@ -1,5 +1,3 @@
 package su.wps.sweetshop.webgateway
 
-class AppF[F[_]] {
-
-}
+class AppF[F[_]] {}

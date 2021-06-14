@@ -3,20 +3,23 @@ import Dependencies._
 organization in ThisBuild := "su.wps"
 version in ThisBuild := "0.1.0-SNAPSHOT"
 
-scalaVersion in ThisBuild := "2.12.10"
+scalaVersion in ThisBuild := "2.13.6"
 
 val commonScalacOptions = Seq(
   "-deprecation",
-  "-feature",
   "-encoding",
   "UTF-8",
   "-language:implicitConversions",
-  "-language:experimental.macros",
-  "-language:postfixOps",
   "-language:higherKinds",
-  "-language:existentials",
-  "-language:reflectiveCalls",
-  "-Ypartial-unification"
+  "-language:postfixOps",
+  "-feature",
+  "-Xfatal-warnings",
+  "-Ymacro-annotations"
+)
+
+val commonSettings = Seq(
+  addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.13.0" cross CrossVersion.patch),
+  addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1")
 )
 
 lazy val root =
@@ -26,11 +29,11 @@ lazy val root =
 
 lazy val authApi = (project in file("microservices/auth-api"))
   .settings(
+    commonSettings,
     scalacOptions ++= commonScalacOptions,
     libraryDependencies ++= Seq(
       circeGeneric
-    ),
-    addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
+    )
   )
 
 lazy val authImpl = (project in file("microservices/auth-impl"))
@@ -47,11 +50,9 @@ lazy val authImpl = (project in file("microservices/auth-impl"))
       pureConfig,
       pureconfigCatsEffect,
       plivo,
-      circeJava8,
       jwtCirce
     ),
-    resolvers ++= Seq(Resolver.sonatypeRepo("releases")),
-    addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
+    resolvers ++= Seq(Resolver.sonatypeRepo("releases"))
   )
   .dependsOn(authApi, errors)
 

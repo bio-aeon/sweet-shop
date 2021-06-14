@@ -2,6 +2,7 @@ package su.wps.sweetshop.auth.impl.repositories
 
 import doobie._
 import doobie.implicits._
+import doobie.implicits.javatime._
 import su.wps.sweetshop.auth.impl.models.SMSCode
 
 class SMSCodeRepositoryImpl extends DoobieRepository with SMSCodeRepository[ConnectionIO] {
