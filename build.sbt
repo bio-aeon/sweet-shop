@@ -27,17 +27,11 @@ lazy val root =
     .settings(name := "sweet-shop")
     .aggregate(authApi, authImpl, webGateway)
 
-lazy val authApi = (project in file("microservices/auth-api"))
-  .settings(
-    commonSettings,
-    scalacOptions ++= commonScalacOptions,
-    libraryDependencies ++= Seq(
-      circeGeneric
-    )
-  )
+lazy val authApi = project in file("microservices/auth-api")
 
 lazy val authImpl = (project in file("microservices/auth-impl"))
   .settings(
+    commonSettings,
     scalacOptions ++= commonScalacOptions,
     libraryDependencies ++= Seq(
       monix,
@@ -47,10 +41,20 @@ lazy val authImpl = (project in file("microservices/auth-impl"))
       doobieCore,
       doobiePostgres,
       doobieHikari,
+      circeGeneric,
       pureConfig,
       pureconfigCatsEffect,
+      newtype,
       plivo,
-      jwtCirce
+      jwtCirce,
+      tofuCore,
+      tofuEnv,
+      tofuLogging,
+      tofuDoobie,
+      log4catsCore,
+      log4catsSlf4j,
+      mouse,
+      specs2Core % Test
     ),
     resolvers ++= Seq(Resolver.sonatypeRepo("releases"))
   )
@@ -64,7 +68,7 @@ lazy val webGateway = (project in file("microservices/web-gateway"))
       http4sCirce,
       http4sDsl,
       monix,
-      circeOptics
+      circeGeneric
     )
   )
   .dependsOn(authApi, errors)

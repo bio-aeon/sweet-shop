@@ -1,29 +1,30 @@
 package su.wps.sweetshop.auth.impl.gateways
 
-import java.util.Collections
-
-import cats.Applicative
-import cats.syntax.applicative._
-import cats.syntax.either._
+import cats.effect.Sync
+import cats.syntax.functor._
 import com.plivo.api.Plivo
 import com.plivo.api.models.message.Message
 import su.wps.sweetshop.auth.impl.config.PlivoConfig
 import su.wps.sweetshop.auth.impl.models.TemplateVar
 
-import scala.util.Try
+import java.util.Collections
 
-class PlivoGateway[F[_]: Applicative](conf: PlivoConfig) extends SMSGateway[F] {
-  Plivo.init(conf.authId, conf.authToken)
+object PlivoGateway {
 
-  def send(to: String, template: String, variables: List[TemplateVar]): F[Either[String, Unit]] = {
-    val content = variables.foldLeft(template) { (acc, mergeVar) =>
-      acc.replaceAll(s"""\\{\\{${mergeVar.name}\\}\\}\\w*""", mergeVar.content)
+  def create[I[_], F[_]: Sync](conf: PlivoConfig)(implicit I: Sync[I]): I[SMSGateway[F]] =
+    I.delay(Plivo.init(conf.authId, conf.authToken)).as(new Impl[F](conf))
+
+  private final class Impl[F[_]](conf: PlivoConfig)(implicit F: Sync[F]) extends SMSGateway[F] {
+    def send(to: String, template: String, variables: List[TemplateVar]): F[Unit] = {
+      val content = variables.foldLeft(template) { (acc, mergeVar) =>
+        acc.replaceAll(s"""\\{\\{${mergeVar.name}\\}\\}\\w*""", mergeVar.content)
+      }
+
+      F.delay(
+        Message
+          .creator(conf.sourcePhone, Collections.singletonList(to), content)
+          .create()
+      )
     }
-
-    Try {
-      Message
-        .creator("+7(342)206-05-64", Collections.singletonList(to), content)
-        .create()
-    }.toEither.bimap(_.getMessage, _ => ()).pure[F]
   }
 }
