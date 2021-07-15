@@ -18,6 +18,7 @@ val commonScalacOptions = Seq(
 )
 
 val commonSettings = Seq(
+  scalacOptions ++= commonScalacOptions,
   addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.13.0" cross CrossVersion.patch),
   addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1")
 )
@@ -25,14 +26,13 @@ val commonSettings = Seq(
 lazy val root =
   (project in file("."))
     .settings(name := "sweet-shop")
-    .aggregate(authApi, authImpl, webGateway)
+    .aggregate(authApi, authImpl, paymentsImpl, webGateway)
 
 lazy val authApi = project in file("microservices/auth-api")
 
 lazy val authImpl = (project in file("microservices/auth-impl"))
   .settings(
     commonSettings,
-    scalacOptions ++= commonScalacOptions,
     libraryDependencies ++= Seq(
       monix,
       http4sBlazeServer,
@@ -55,14 +55,28 @@ lazy val authImpl = (project in file("microservices/auth-impl"))
       log4catsSlf4j,
       mouse,
       specs2Core % Test
-    ),
-    resolvers ++= Seq(Resolver.sonatypeRepo("releases"))
+    )
   )
   .dependsOn(authApi, errors)
 
+lazy val paymentsImpl = (project in file("microservices/payments-impl"))
+  .settings(
+    commonSettings,
+    libraryDependencies ++= Seq(
+      monix,
+      http4sBlazeServer,
+      http4sCirce,
+      http4sDsl,
+      pureConfig,
+      pureconfigCatsEffect,
+      tofuCore,
+      tofuEnv,
+      tofuLogging
+    )
+  )
+
 lazy val webGateway = (project in file("microservices/web-gateway"))
   .settings(
-    scalacOptions ++= commonScalacOptions,
     libraryDependencies ++= Seq(
       http4sBlazeServer,
       http4sCirce,
@@ -74,4 +88,4 @@ lazy val webGateway = (project in file("microservices/web-gateway"))
   .dependsOn(authApi, errors)
 
 lazy val errors = (project in file("modules/errors"))
-  .settings(scalacOptions ++= commonScalacOptions, libraryDependencies ++= Seq(catsCore))
+  .settings(commonSettings, libraryDependencies ++= Seq(catsCore))

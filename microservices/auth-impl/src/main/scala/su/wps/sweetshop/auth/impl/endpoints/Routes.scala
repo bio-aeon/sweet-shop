@@ -45,10 +45,12 @@ object Routes {
 
     import serviceWirings._
 
+    private val apiRoot: / = Root / "api"
+
     private val apiRoutes = HttpRoutes.of[F] {
-      case r @ POST -> Root / "api" / "sms-codes" =>
+      case r @ POST -> apiRoot / "sms-codes" =>
         processRequest[CreateSMSCodeRequest, Unit](r, r => smsCodeService.createSMSCode(r.phone))
-      case r @ POST -> Root / "api" / "sms-code-tokens" =>
+      case r @ POST -> apiRoot / "sms-code-tokens" =>
         processRequest[CreateTokenBySMSCodeRequest, TokenResult](
           r,
           r => authService.createTokenBySMSCode(r.phone, r.code)
