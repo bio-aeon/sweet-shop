@@ -9,7 +9,7 @@ import cats.{Functor, Monad}
 import su.wps.sweetshop.auth.impl.gateways.SMSGateway
 import su.wps.sweetshop.auth.impl.models.{SMSCode, TemplateVar}
 import su.wps.sweetshop.auth.impl.repositories.SMSCodeRepository
-import su.wps.sweetshop.auth.impl.syntax.clock._
+import su.wps.sweetshop.utils.syntax.clock._
 import tofu.doobie.transactor.Txr
 import mouse.anyf._
 import su.wps.sweetshop.auth.impl.models.errors.{AppErr, TooFrequentSMSCodeGeneration}

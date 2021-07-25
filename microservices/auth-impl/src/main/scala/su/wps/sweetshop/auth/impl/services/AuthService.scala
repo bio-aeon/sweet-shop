@@ -15,7 +15,7 @@ import su.wps.sweetshop.auth.impl.config.AuthConfig
 import su.wps.sweetshop.auth.impl.models.{AuthUser, UserId}
 import su.wps.sweetshop.auth.impl.repositories.{AuthUserRepository, SMSCodeRepository}
 import su.wps.sweetshop.auth.impl.models.errors.{AppErr, IncorrectSMSCode, SMSCodeNotFound}
-import su.wps.sweetshop.auth.impl.syntax.clock._
+import su.wps.sweetshop.utils.syntax.clock._
 import tofu.Raise
 import tofu.doobie.transactor.Txr
 import tofu.logging.{Logging, Logs}

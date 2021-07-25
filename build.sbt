@@ -57,7 +57,7 @@ lazy val authImpl = (project in file("microservices/auth-impl"))
       specs2Core % Test
     )
   )
-  .dependsOn(authApi, errors)
+  .dependsOn(authApi, errors, utilsSyntax)
 
 lazy val paymentsImpl = (project in file("microservices/payments-impl"))
   .settings(
@@ -74,6 +74,7 @@ lazy val paymentsImpl = (project in file("microservices/payments-impl"))
       tofuLogging
     )
   )
+  .dependsOn(utilsSyntax)
 
 lazy val webGateway = (project in file("microservices/web-gateway"))
   .settings(
@@ -89,3 +90,6 @@ lazy val webGateway = (project in file("microservices/web-gateway"))
 
 lazy val errors = (project in file("modules/errors"))
   .settings(commonSettings, libraryDependencies ++= Seq(catsCore))
+
+lazy val utilsSyntax = (project in file("modules/utils-syntax"))
+  .settings(commonSettings, libraryDependencies ++= Seq(catsEffect))

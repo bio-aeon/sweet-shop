@@ -4,6 +4,7 @@ object Dependencies {
   object Versions {
     val logback = "1.2.3"
     val cats = "2.6.1"
+    val catsEffect = "2.5.1"
     val http4s = "0.21.24"
     val monix = "3.0.0"
     val circe = "0.13.0"
@@ -20,6 +21,7 @@ object Dependencies {
 
   val logbackClassic = "ch.qos.logback" % "logback-classic" % Versions.logback
   val catsCore = "org.typelevel" %% "cats-core" % Versions.cats
+  val catsEffect = "org.typelevel" %% "cats-effect" % Versions.catsEffect
   val http4sBlazeServer = "org.http4s" %% "http4s-blaze-server" % Versions.http4s
   val http4sCirce = "org.http4s" %% "http4s-circe" % Versions.http4s
   val http4sDsl = "org.http4s" %% "http4s-dsl" % Versions.http4s

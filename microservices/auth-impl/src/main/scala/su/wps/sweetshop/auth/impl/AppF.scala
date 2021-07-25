@@ -9,13 +9,13 @@ import pureconfig.ConfigSource
 import pureconfig.module.catseffect._
 import su.wps.sweetshop.auth.impl.config.AppConfig
 import su.wps.sweetshop.auth.impl.data.AppContext
-import su.wps.sweetshop.auth.impl.syntax.resource._
 import su.wps.sweetshop.auth.impl.wirings.{
   EndpointWirings,
   RepositoryWirings,
   ServiceWirings,
   TransactorWirings
 }
+import su.wps.sweetshop.utils.syntax.resource._
 import tofu.WithRun
 import tofu.lift.Unlift
 import tofu.logging.{Logging, Logs}

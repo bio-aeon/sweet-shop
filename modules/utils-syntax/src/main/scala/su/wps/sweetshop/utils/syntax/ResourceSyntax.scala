@@ -1,4 +1,4 @@
-package su.wps.sweetshop.auth.impl.syntax
+package su.wps.sweetshop.utils.syntax
 
 import cats.Applicative
 import cats.effect.Resource

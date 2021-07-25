@@ -7,7 +7,7 @@ import doobie.util.ExecutionContexts
 import mouse.any._
 import su.wps.sweetshop.auth.impl.config.DbConfig
 import su.wps.sweetshop.auth.impl.data.AppContext
-import su.wps.sweetshop.auth.impl.syntax.resource._
+import su.wps.sweetshop.utils.syntax.resource._
 import tofu.HasContext
 import tofu.doobie.transactor.Txr
 

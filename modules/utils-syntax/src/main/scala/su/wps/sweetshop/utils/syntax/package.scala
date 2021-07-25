@@ -1,4 +1,4 @@
-package su.wps.sweetshop.auth.impl
+package su.wps.sweetshop.utils
 
 package object syntax {
 
