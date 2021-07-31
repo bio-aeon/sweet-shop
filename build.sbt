@@ -64,14 +64,29 @@ lazy val paymentsImpl = (project in file("microservices/payments-impl"))
     commonSettings,
     libraryDependencies ++= Seq(
       monix,
+      aecorCore,
       http4sBlazeServer,
       http4sCirce,
       http4sDsl,
+      doobieCore,
+      doobiePostgres,
+      doobieHikari,
+      circeGeneric,
+      circeParser,
       pureConfig,
       pureconfigCatsEffect,
+      newtype,
+      enumeratum,
+      sttpBackendCats,
+      fs2Kafka,
+      xtract,
       tofuCore,
       tofuEnv,
-      tofuLogging
+      tofuLogging,
+      tofuDoobie,
+      log4catsCore,
+      log4catsSlf4j,
+      mouse
     )
   )
   .dependsOn(utilsSyntax)
