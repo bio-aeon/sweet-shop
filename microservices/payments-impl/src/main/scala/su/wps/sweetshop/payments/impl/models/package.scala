@@ -3,6 +3,7 @@ package su.wps.sweetshop.payments.impl
 import aecor.encoding.{KeyDecoder => AecorKeyDecoder, KeyEncoder => AecorKeyEncoder}
 import cats.kernel.Hash
 import doobie.Meta
+import io.circe.Decoder
 import io.estatico.newtype.macros.newtype
 
 package object models {
@@ -10,6 +11,7 @@ package object models {
 
   object CardLinkId {
     implicit val meta: Meta[CardLinkId] = deriving
+    implicit val decoder: Decoder[CardLinkId] = deriving
     implicit val hash: Hash[CardLinkId] = Hash.fromUniversalHashCode
     implicit val aecorKeyEncoder: AecorKeyEncoder[CardLinkId] = deriving
     implicit val aecorKeyDecoder: AecorKeyDecoder[CardLinkId] = deriving
@@ -19,6 +21,7 @@ package object models {
 
   object CustomerId {
     implicit val meta: Meta[CustomerId] = deriving
+    implicit val decoder: Decoder[CustomerId] = deriving
     implicit val hash: Hash[CustomerId] = Hash.fromUniversalHashCode
     implicit val aecorKeyEncoder: AecorKeyEncoder[CustomerId] = deriving
     implicit val aecorKeyDecoder: AecorKeyDecoder[CustomerId] = deriving
@@ -27,6 +30,7 @@ package object models {
   @newtype final case class PaymentId(value: String)
 
   object PaymentId {
+    implicit val decoder: Decoder[PaymentId] = deriving
     implicit val hash: Hash[PaymentId] = Hash.fromUniversalHashCode
     implicit val aecorKeyEncoder: AecorKeyEncoder[PaymentId] = deriving
     implicit val aecorKeyDecoder: AecorKeyDecoder[PaymentId] = deriving

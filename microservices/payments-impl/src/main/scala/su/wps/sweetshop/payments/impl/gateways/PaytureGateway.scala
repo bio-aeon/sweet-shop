@@ -1,9 +1,9 @@
 package su.wps.sweetshop.payments.impl.gateways
 
-import cats.Monad
 import cats.syntax.either._
 import cats.syntax.flatMap._
 import cats.syntax.functor._
+import cats.{Functor, Monad}
 import com.lucidchart.open.xtract.{ParseFailure, ParseSuccess, PartialParseSuccess, XmlReader}
 import sttp.client3._
 import su.wps.sweetshop.payments.impl.config.PaytureConfig
@@ -14,7 +14,7 @@ import su.wps.sweetshop.payments.impl.models.payture.{
   SuccessChargeResult,
   SuccessPayBlockResult
 }
-import tofu.logging.Logging
+import tofu.logging.{Logging, Logs}
 import tofu.syntax.handle._
 import tofu.syntax.logging._
 import tofu.{Catches, Raise}
@@ -44,10 +44,15 @@ trait PaytureGateway[F[_]] {
 }
 
 object PaytureGateway {
+  def create[I[_]: Functor, F[_]: Monad: Raise[*[_], AppErr]: Catches](
+    config: PaytureConfig,
+    sttpBackend: SttpBackend[F, Any]
+  )(implicit logs: Logs[I, F]): I[PaytureGateway[F]] =
+    logs.forService[PaytureGateway[F]].map(implicit log => new Impl[F](config, sttpBackend))
 
   private final class Impl[F[_]: Catches: Logging](
     config: PaytureConfig,
-    backend: SttpBackend[F, Any]
+    sttpBackend: SttpBackend[F, Any]
   )(implicit F: Monad[F], R: Raise[F, AppErr])
       extends PaytureGateway[F]
       with GatewayLogging {
@@ -122,7 +127,7 @@ object PaytureGateway {
 
       for {
         _ <- debug"${requestToString(req)}"
-        resp <- req.send(backend).handleWith[Throwable] {
+        resp <- req.send(sttpBackend).handleWith[Throwable] {
           case _: TimeoutException => R.raise(TimeoutFailure(url))
           case e: Throwable => R.raise(ConnectionError(e.getMessage))
         }

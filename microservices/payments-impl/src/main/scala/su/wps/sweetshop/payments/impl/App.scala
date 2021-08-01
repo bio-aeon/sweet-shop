@@ -1,19 +1,26 @@
 package su.wps.sweetshop.payments.impl
 
 import cats.effect.ExitCode
+import cats.~>
+import doobie._
 import monix.eval.{Task, TaskApp}
 import su.wps.sweetshop.payments.impl.data.AppContext
 import tofu.env.Env
 import tofu.logging.{LoggableContext, Logs}
 
 object App extends TaskApp {
-  type EnvCxt[+A] = Env[AppContext, A]
+  type EnvF[+A] = Env[AppContext, A]
 
-  implicit private def logs: Logs[Task, EnvCxt] = Logs.withContext[Task, EnvCxt]
+  implicit private def logs: Logs[Task, EnvF] = Logs.withContext[Task, EnvF]
 
-  implicit private def loggableContext: LoggableContext[EnvCxt] =
-    LoggableContext.of[EnvCxt].instance[AppContext]
+  implicit private def loggableContext: LoggableContext[EnvF] =
+    LoggableContext.of[EnvF].instance[AppContext]
 
-  def run(args: List[String]): Task[ExitCode] =
-    AppF.resource[Task, EnvCxt].use(_ => Task.never).as(ExitCode.Success)
+  def run(args: List[String]): Task[ExitCode] = {
+    implicit val fkICIO: Task ~> ConnectionIO = Task.liftTo[ConnectionIO]
+    implicit val fkDBCIO: ConnectionIO ~> ConnectionIO =
+      λ[ConnectionIO ~> ConnectionIO](identity(_))
+
+    AppF.resource[Task, EnvF, ConnectionIO].use(_ => Task.never).as(ExitCode.Success)
+  }
 }

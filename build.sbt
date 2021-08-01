@@ -26,7 +26,7 @@ val commonSettings = Seq(
 lazy val root =
   (project in file("."))
     .settings(name := "sweet-shop")
-    .aggregate(authApi, authImpl, paymentsImpl, webGateway)
+    .aggregate(authApi, authImpl, paymentsApi, paymentsImpl, webGateway)
 
 lazy val authApi = project in file("microservices/auth-api")
 
@@ -59,11 +59,16 @@ lazy val authImpl = (project in file("microservices/auth-impl"))
   )
   .dependsOn(authApi, errors, utilsSyntax)
 
+lazy val paymentsApi = (project in file("microservices/payments-api"))
+  .settings(libraryDependencies ++= Seq(circeGeneric))
+
 lazy val paymentsImpl = (project in file("microservices/payments-impl"))
   .settings(
     commonSettings,
     libraryDependencies ++= Seq(
       monix,
+      bcprov,
+      bcpkix,
       aecorCore,
       http4sBlazeServer,
       http4sCirce,
@@ -86,10 +91,12 @@ lazy val paymentsImpl = (project in file("microservices/payments-impl"))
       tofuDoobie,
       log4catsCore,
       log4catsSlf4j,
-      mouse
+      mouse,
+      meowMtl % Test,
+      specs2Core % Test
     )
   )
-  .dependsOn(utilsSyntax)
+  .dependsOn(paymentsApi, authApi, utilsSyntax)
 
 lazy val webGateway = (project in file("microservices/web-gateway"))
   .settings(
@@ -107,4 +114,4 @@ lazy val errors = (project in file("modules/errors"))
   .settings(commonSettings, libraryDependencies ++= Seq(catsCore))
 
 lazy val utilsSyntax = (project in file("modules/utils-syntax"))
-  .settings(commonSettings, libraryDependencies ++= Seq(catsEffect))
+  .settings(commonSettings, libraryDependencies ++= Seq(catsEffect, tofuCore, tofuLogging, shapeless))
