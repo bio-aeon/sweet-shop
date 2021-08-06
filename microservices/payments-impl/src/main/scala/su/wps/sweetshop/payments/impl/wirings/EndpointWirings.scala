@@ -27,10 +27,11 @@ final class EndpointWirings[I[_]: Timer: ConcurrentEffect](config: HttpServerCon
 object EndpointWirings {
   def create[I[_]: ConcurrentEffect: Timer, F[_]: Concurrent: Timer](
     config: AppConfig,
-    serviceWirings: ServiceWirings[F]
+    serviceWirings: ServiceWirings[F],
+    validatorWirings: ValidatorWirings[F]
   )(implicit logs: Logs[I, F], WR: WithRun[F, I, AppContext]): I[EndpointWirings[I]] =
     Routes
-      .create[I, F](config.payture, serviceWirings)
+      .create[I, F](config.payture, serviceWirings, validatorWirings)
       .map(_.routes)
       .map(routes => new EndpointWirings[I](config.httpServer, routes))
 }

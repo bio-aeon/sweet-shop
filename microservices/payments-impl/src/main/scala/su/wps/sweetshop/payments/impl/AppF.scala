@@ -49,7 +49,10 @@ object AppF {
         processWirings <- ProcessWirings
           .create[I, F, DB](dbWirings, kafkaWirings, serviceWirings, entityWirings)
           .toResource
-        endpointWirings <- EndpointWirings.create[I, F](appConfig, serviceWirings).toResource
+        validatorWirings = ValidatorWirings.create[F]
+        endpointWirings <- EndpointWirings
+          .create[I, F](appConfig, serviceWirings, validatorWirings)
+          .toResource
         _ <- processWirings.launchProcesses.mapK(WR.runContextK(ctx))
         _ <- endpointWirings.launchHttpService.compile.drain.toResource
         _ <- info"Releasing application resources".lift[I].toResource
