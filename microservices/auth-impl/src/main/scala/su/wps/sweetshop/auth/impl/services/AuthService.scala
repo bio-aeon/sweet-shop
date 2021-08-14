@@ -5,6 +5,7 @@ import cats.effect.Clock
 import cats.syntax.flatMap._
 import cats.syntax.functor._
 import cats.syntax.applicative._
+import cats.syntax.option._
 import cats.{Functor, Monad}
 import io.circe.syntax._
 import mouse.anyf._
@@ -58,11 +59,11 @@ object AuthService {
       } yield createJWT(userId, now)
 
     private[services] def getOrCreateUser(phone: String, now: ZonedDateTime) =
-      OptionT(authUserRepo.findByPhone(phone).thrushK(xa.trans)).map(_.id).getOrElseF {
+      OptionT(authUserRepo.findByPhone(phone).thrushK(xa.trans)).map(_.pk).getOrElseF {
         authUserRepo
-          .insert(AuthUser(UserId(0), phone, now))
+          .insert(AuthUser(phone = phone.some, createdAt = now))
           .thrushK(xa.trans)
-          .map(_.id)
+          .map(_.pk)
       }
 
     private[services] def createJWT(userId: UserId, now: ZonedDateTime): TokenResult = {

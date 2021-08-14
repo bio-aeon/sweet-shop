@@ -30,16 +30,24 @@ abstract sealed class DefaultAuthUserSql {
     def insert(authUser: AuthUser): ConnectionIO[AuthUser] =
       (fr"""
       insert into""" ++ tableName ++ fr"""(
+        email,
+        password,
+        is_verified,
+        created_at,
         phone,
-        created_at
+        role
       )
       values (
+        ${authUser.email},
+        ${authUser.password},
+        ${authUser.isVerified},
+        ${authUser.createdAt},
         ${authUser.phone},
-        ${authUser.createdAt}
+        ${authUser.role}
       )
     """).update
         .withUniqueGeneratedKeys[Int]("id")
-        .map(id => authUser.copy(id = UserId(id)))
+        .map(id => authUser.copy(id = Some(UserId(id))))
 
     def findByPhone(phone: String): ConnectionIO[Option[AuthUser]] =
       (fr"select email, password, is_verified, created_at, phone, role, id from" ++ tableName ++

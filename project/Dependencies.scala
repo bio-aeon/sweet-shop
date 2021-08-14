@@ -24,6 +24,9 @@ object Dependencies {
     val log4Cats = "1.1.1"
     val mouse = "1.0.3"
     val meowMtl = "0.3.0-M1"
+    val scalacheckShapeless = "1.3.0"
+    val testcontainersScala = "0.39.5"
+    val testcontainersPostgresql = "1.16.0"
     val specs2 = "4.12.1"
   }
 
@@ -60,5 +63,8 @@ object Dependencies {
   val log4catsSlf4j = "io.chrisdavenport" %% "log4cats-slf4j" % Versions.log4Cats
   val mouse = "org.typelevel" %% "mouse" % Versions.mouse
   val meowMtl = "com.olegpy" %% "meow-mtl" % Versions.meowMtl
+  val scalacheckShapeless = "com.github.alexarchambault" %% "scalacheck-shapeless_1.15" % Versions.scalacheckShapeless
+  val testcontainersScala = "com.dimafeng" %% "testcontainers-scala" % Versions.testcontainersScala
+  val testcontainersPostgresql = "org.testcontainers" % "postgresql" % Versions.testcontainersPostgresql
   val specs2Core = "org.specs2" %% "specs2-core" % Versions.specs2
 }

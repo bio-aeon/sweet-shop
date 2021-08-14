@@ -45,6 +45,7 @@ lazy val authImpl = (project in file("microservices/auth-impl"))
       pureConfig,
       pureconfigCatsEffect,
       newtype,
+      enumeratum,
       plivo,
       jwtCirce,
       tofuCore,
@@ -54,6 +55,9 @@ lazy val authImpl = (project in file("microservices/auth-impl"))
       log4catsCore,
       log4catsSlf4j,
       mouse,
+      scalacheckShapeless % Test,
+      testcontainersScala % Test,
+      testcontainersPostgresql % Test,
       specs2Core % Test
     )
   )
