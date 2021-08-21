@@ -33,7 +33,7 @@ object AuthService {
     config: AuthConfig,
     smsCodeRepo: SMSCodeRepository[DB],
     authUserRepo: AuthUserRepository[DB],
-    xa: Txr.Aux[F, DB]
+    xa: Txr[F, DB]
   )(implicit logs: Logs[I, F]): I[AuthService[F]] =
     logs
       .forService[AuthService[F]]
@@ -43,7 +43,7 @@ object AuthService {
     settings: AuthConfig,
     smsCodeRepo: SMSCodeRepository[DB],
     authUserRepo: AuthUserRepository[DB],
-    xa: Txr.Aux[F, DB]
+    xa: Txr[F, DB]
   )(implicit F: Monad[F], R: Raise[F, AppErr])
       extends AuthService[F] {
     def createTokenBySMSCode(phone: String, code: String): F[TokenResult] =

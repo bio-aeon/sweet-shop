@@ -27,7 +27,7 @@ object SMSCodeService {
   def create[I[_]: Functor, F[_]: Clock: Monad: Raise[*[_], AppErr], DB[_]](
     repo: SMSCodeRepository[DB],
     smsGateway: SMSGateway[F],
-    xa: Txr.Aux[F, DB]
+    xa: Txr[F, DB]
   )(implicit logs: Logs[I, F]): I[SMSCodeService[F]] =
     logs
       .forService[AuthService[F]]
@@ -36,7 +36,7 @@ object SMSCodeService {
   private final class Impl[F[_]: Clock: Monad: Logging, DB[_]](
     repo: SMSCodeRepository[DB],
     smsGateway: SMSGateway[F],
-    xa: Txr.Aux[F, DB]
+    xa: Txr[F, DB]
   )(implicit R: Raise[F, AppErr])
       extends SMSCodeService[F] {
     def createSMSCode(phone: String): F[Unit] =

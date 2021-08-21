@@ -1,12 +1,12 @@
 package su.wps.sweetshop.payments.impl.data
 
-import tofu.HasLocal
+import tofu.WithLocal
 import tofu.logging.Loggable
 
 final case class AppContext(traceId: String)
 
 object AppContext {
-  type LocalAppCxt[F[_]] = HasLocal[F, AppContext]
+  type LocalAppCxt[F[_]] = WithLocal[F, AppContext]
 
   def empty: AppContext = AppContext("")
 

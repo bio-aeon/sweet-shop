@@ -2,15 +2,15 @@ import sbt._
 
 object Dependencies {
   object Versions {
-    val logback = "1.2.3"
+    val logback = "1.2.5"
     val cats = "2.6.1"
-    val catsEffect = "2.5.1"
-    val shapeless = "2.3.3"
+    val catsEffect = "2.5.3"
+    val shapeless = "2.3.7"
     val aecor = "0.19.0"
-    val http4s = "0.21.24"
-    val monix = "3.0.0"
+    val http4s = "0.21.26"
+    val monix = "3.4.0"
     val bouncyCastle = "1.69"
-    val circe = "0.13.0"
+    val circe = "0.14.1"
     val pureconfig = "0.14.0"
     val newtype = "0.4.4"
     val enumeratum = "1.7.0"
@@ -20,14 +20,14 @@ object Dependencies {
     val fs2Kafka = "1.7.0"
     val xtract = "2.2.1"
     val jwt = "5.0.0"
-    val tofu = "0.10.2"
+    val tofu = "0.10.3"
     val log4Cats = "1.1.1"
-    val mouse = "1.0.3"
+    val mouse = "1.0.4"
     val meowMtl = "0.3.0-M1"
     val scalacheckShapeless = "1.3.0"
     val testcontainersScala = "0.39.5"
     val testcontainersPostgresql = "1.16.0"
-    val specs2 = "4.12.1"
+    val specs2 = "4.12.3"
   }
 
   val logbackClassic = "ch.qos.logback" % "logback-classic" % Versions.logback

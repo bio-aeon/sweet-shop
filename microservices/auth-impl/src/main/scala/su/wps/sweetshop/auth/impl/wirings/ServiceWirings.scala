@@ -17,7 +17,7 @@ object ServiceWirings {
   def create[I[_]: Sync, F[_]: Clock: Sync, DB[_]: Monad](
     config: AppConfig,
     repoWirings: RepositoryWirings[DB],
-    xa: Txr.Aux[F, DB]
+    xa: Txr[F, DB]
   )(implicit logs: Logs[I, F]): I[ServiceWirings[F]] = {
     import repoWirings._
 

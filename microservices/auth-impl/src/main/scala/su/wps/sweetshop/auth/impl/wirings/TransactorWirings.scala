@@ -6,20 +6,16 @@ import doobie.hikari.HikariTransactor
 import doobie.util.ExecutionContexts
 import mouse.any._
 import su.wps.sweetshop.auth.impl.config.DbConfig
-import su.wps.sweetshop.auth.impl.data.AppContext
 import su.wps.sweetshop.utils.syntax.resource._
-import tofu.HasContext
 import tofu.doobie.transactor.Txr
 
 object TransactorWirings {
 
-  def resource[F[_]: ContextShift: Async: HasContext[*[_], AppContext]](
-    config: DbConfig
-  ): Resource[F, Txr.Contextual[F, AppContext]] =
+  def resource[F[_]: ContextShift: Async](config: DbConfig): Resource[F, Txr.Continuational[F]] =
     for {
       txr <- mkTransactor(config)
       _ <- txr.connect(txr.kernel)
-    } yield Txr.contextual[F](txr)
+    } yield Txr.continuational(txr)
 
   private def mkTransactor[F[_]: ContextShift: Async, DB[_]](
     config: DbConfig
